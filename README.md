@@ -1,0 +1,2 @@
+# LineLogToDataFrame
+Lineのログをデータフレームに変換するスクリプト
