@@ -1,6 +1,7 @@
 import re
 import os
 import pandas as pd
+import argparse
 
 # 日付行で分割
 def get_date_content(text):
@@ -168,19 +169,27 @@ def parse_linelog(textdata):
       logs.append(log)
   return logs
 
+def getArgs():
+  parser = argparse.ArgumentParser(description="lineのトーク履歴から各投稿の情報を抽出する")
+  parser.add_argument("-i", "--input", help="lineのトーク履歴ファイル", required=True)
+  parser.add_argument("-o", "--output", help="抽出した投稿の情報を保存するファイル", required=True)
+  args = parser.parse_args()
+  return args
 
-PATH = "sample.txt"
-textdata = ""
-with open(PATH, "r") as f:
-  textdata = f.read()
+if __name__=="__main__":
+  args = getArgs()
+  PATH = args.input
+  textdata = ""
+  with open(PATH, "r") as f:
+    textdata = f.read()
 
-# dfに情報として含める列名を定義
-header = ["datestr","timestr","name","content_no_tab_and_br","send_type","year","month","day","weekday","hour","minute","length","param0_key","param0_val","param1_key","param1_val"]
-# lineのトーク履歴のパース結果を取得
-logs = parse_linelog(textdata)
-# dfに変換
-df = pd.DataFrame({k: [v.get(k,"") for v in logs] for k in header})
-# 改行、タブなしの投稿文字列をcontentとして取得
-df = df.rename(columns = {"content_no_tab_and_br":"content"})
-# 保存
-df.to_csv("log.tsv", sep="\t", index=False, header=True)
+  # dfに情報として含める列名を定義
+  header = ["datestr","timestr","name","content_no_tab_and_br","send_type","year","month","day","weekday","hour","minute","length","param0_key","param0_val","param1_key","param1_val"]
+  # lineのトーク履歴のパース結果を取得
+  logs = parse_linelog(textdata)
+  # dfに変換
+  df = pd.DataFrame({k: [v.get(k,"") for v in logs] for k in header})
+  # 改行、タブなしの投稿文字列をcontentとして取得
+  df = df.rename(columns = {"content_no_tab_and_br":"content"})
+  # 保存
+  df.to_csv(args.output, sep="\t", index=False, header=True)
