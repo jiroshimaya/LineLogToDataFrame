@@ -3,7 +3,7 @@ import argparse
 import datetime
 from tqdm import tqdm
 
-
+# 言語モデルのファインチューニング用にデータを整形する
 
 def concatenate(df, send_type = "text", timedelta = datetime.timedelta(minutes=30)):
   last_timestamp = datetime.datetime(1970, 1, 1)

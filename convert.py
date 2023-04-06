@@ -164,7 +164,11 @@ def parse_linelog(textdata):
         "content": post,
         "send_type": postinfo.pop("send_type"),
         "length": postinfo.pop("length"),
-        "content_no_tab_and_br": post_no_tab_and_br
+        "content_no_tab_and_br": post_no_tab_and_br,
+        "param0_key": postinfo.pop("param0_key"),
+        "param0_val": postinfo.pop("param0_val"),
+        "param1_key": postinfo.pop("param1_key"),
+        "param1_val": postinfo.pop("param1_val")
       })
       logs.append(log)
   return logs
